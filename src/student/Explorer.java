@@ -55,21 +55,18 @@ public class Explorer {
             // add current position to seen items
             compass.push(state.getCurrentLocation());
             seen.add(state.getCurrentLocation());
-            
-            //Collection<NodeStatus> cns = state.getNeighbours();
-            
+               
             Predicate<NodeStatus> unvisited = p -> seen.contains(p.getId()) == false;
             Predicate<NodeStatus> lessmax = p -> p.getDistanceToTarget() < Integer.MAX_VALUE;
               
             Long next;
-            Long nextno;
             Optional<NodeStatus> nextpossible = state.getNeighbours().stream().filter(unvisited).filter(lessmax).min((p1,p2)-> p1.compareTo(p2));
             
             if (nextpossible.isPresent()){
             	next = nextpossible.get().getId();
             }
             else {
-            	nextno = compass.pop();
+            	compass.pop();
             	next = compass.pop();
             	
             }
