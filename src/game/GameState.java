@@ -188,6 +188,8 @@ public class GameState implements ExplorationState, EscapeState {
         return (int) (minTimeToEscape + EXTRA_TIME_FACTOR * (Cavern.MAX_EDGE_WEIGHT + 1) * escapeCavern.numOpenTiles() / 2);
 
     }
+    
+    
 
     /**
      * Return the bonus factor, as described in handout.
