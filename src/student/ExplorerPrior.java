@@ -22,7 +22,7 @@ import java.util.stream.*;
 import java.util.function.Predicate;
 import java.util.Iterator;
 
-public class Explorer {
+public class ExplorerPrior {
 
     /**
      * Explore the cavern, trying to find the orb in as few steps as possible.
@@ -117,90 +117,138 @@ public class Explorer {
      */    
     public void escape(EscapeState state) {
     	
-    	PriorityQueue<SuperNode> frontier = new PriorityQueueImpl<>();
     	
-    	Map<Long, SuperNode> mapper = new HashMap<>();
+    	SuperNode pratice = new SuperNode();
+    	
+    	
+    	PriorityQueue<Node> frontier = new PriorityQueueImpl<>();
     	
     	Map<Long, Integer> pathWeights = new HashMap<>();
     	
-    	Stack<Node> sequence = new Stack<>();
+    	Map<Node, Node> optimalpred = new HashMap<>();
     	
+    	Map<Node, Node> optimalsucc = new HashMap<>();
     	
-    	Predicate<Node> navigable = p -> p.getTile().getType().isOpen() == true;
+    	//Map<Long, Long> optimalpred = new HashMap<>();
     	
+    	//Stack<Long> optimalpath = new Stack<>();
     	
-    	state.getVertices().stream().filter(navigable).forEach((n) ->mapper.put(n.getId(),new SuperNode(n,null,null)));
-    	
-    	
-    	SuperNode starting = mapper.get(state.getCurrentNode().getId());
-    
-    	starting.setDistance(0);
-    	frontier.add(starting,0);
-    	pathWeights.put(starting.getNode().getId(),0);
+    	Stack<Node> optimalpath = new Stack<>();
     	
     	
     	
+    	//Predicate<Node> navigable = p -> p.getTile().getType().isOpen() == true;
+    	  	
+    	
+    	Node current = state.getCurrentNode();
+    	
+    	
+    	frontier.add(current, 0);
+    	pathWeights.put(current.getId(), 0);
+    	optimalpath.push(state.getExit());
+    	
+    	    	
     	while (frontier.size()!=0){
-    		SuperNode current = frontier.poll();
-    		int cWeight = pathWeights.get(current.getNode().getId());
-    		for (Edge e : current.getNode().getExits()){
-    			Node other = e.getOther(current.getNode());
-    			if (other.getTile().getType().isOpen()) {
-    				SuperNode superother = mapper.get(other.getId());
-    				int weightThroughOther = cWeight + e.length();
-    				Integer existingWeight = pathWeights.get(other.getId());
-    				if (existingWeight == null) {
-    					superother.setDistancePredecessor(weightThroughOther,current.getNode());
-    					pathWeights.put(other.getId(), weightThroughOther);
-    					frontier.add(superother, weightThroughOther);
-    					mapper.put(other.getId(), superother);
-    				}
-    				else if (weightThroughOther < existingWeight){
-    					superother.setDistancePredecessor(weightThroughOther,current.getNode());
-    					pathWeights.put(other.getId(), weightThroughOther);
-    					frontier.updatePriority(superother, weightThroughOther);
-    					mapper.put(other.getId(), superother);
-    				}
-    			}
+    		current = frontier.poll();
+    		int cWeight = pathWeights.get(current.getId());
+    		for (Edge e : current.getExits()){
+    			Node other = e.getOther(current);
+	    		if (other.getTile().getType().isOpen()) {
+	    			int weightThroughOther = cWeight + e.length();
+	    			Integer existingWeight = pathWeights.get(other.getId());
+	    			if (existingWeight == null) {
+	                    pathWeights.put(other.getId(), weightThroughOther);
+	                    frontier.add(other, weightThroughOther);
+	                    optimalpred.put(other, current);
+	                    optimalsucc.put(current, other);
+	                }
+	    			else if (weightThroughOther < existingWeight) {
+	    				pathWeights.put(other.getId(), weightThroughOther);
+	                    frontier.updatePriority(other, weightThroughOther);
+	                    optimalpred.put(other, current);
+	                    optimalsucc.put(current, other);
+	    			}
+	    		}
     		}
-       }
+    	}
+    	
     
     	
-      sequence.push(state.getExit());	
-      SuperNode temp = mapper.get(state.getExit().getId());
-      while (temp != mapper.get(state.getCurrentNode().getId()) )
-	      {
-		      sequence.push(temp.getPrede());
-		      temp = mapper.get(temp.getPrede().getId());
-	      }
-      
-      
-      System.out.println("I need to reach " +state.getExit());
-      
-      System.out.println("It's predecessor is " +mapper.get(state.getExit().getId()).getPrede());
     	
-      System.out.println("I am starting from " +state.getCurrentNode());
-      
-      for (Node n:  state.getCurrentNode().getNeighbours()) {
-  		System.out.println("My neighbours are " +n);
-  	  }
+    	
+    	
+    	System.out.println("This seems to be working");
     
-      sequence.pop();
-      
-      //System.out.println("I am popping" +sequence.pop());
     
-     while (!sequence.isEmpty()){
-    	  Node mover = sequence.pop();
-    	  System.out.println("I am moving to " +mover);
-    	  state.moveTo(mover);
-    	  
-     }
-      
-   
+    	//Long variable = null;
     	
-    	System.out.println("This is going to work");
+    	//while (variable != state.getCurrentNode().getId()) {
+    		//variable = optimalpath.peek();
+    		//optimalpath.push(optimalpred.get(variable));
+    	//}
     	
     	
+    	System.out.println("In theory I am starting from " +state.getCurrentNode());
+    	
+    	System.out.println("My ultimate goal is to get to " +state.getExit());
+    	
+    	
+    	while (state.getCurrentNode()!= state.getExit() ) {
+    		
+    		System.out.println("I am moving out from " +state.getCurrentNode());
+    		
+    		
+    		for (Node n:  state.getCurrentNode().getNeighbours()) {
+        		System.out.println("A neihbgor of current is" +n);
+        	}
+    		
+    		System.out.println("Its optimal successor is " +optimalsucc.get(state.getCurrentNode()));
+        	
+    		state.moveTo(optimalsucc.get(state.getCurrentNode()));
+    		
+    	}
+    	
+    	
+    	
+    	
+    	//System.out.println("Its optimal successor is " +optimalsucc.get(state.getCurrentNode()));
+    	
+    	
+    	//System.out.println("I am first testing the size of pathWeights " +pathWeights.size());
+    	
+    	//System.out.println("I am first testing the size of optimalpred " +optimalpred.size());
+    	
+    	//System.out.println("I am first testing the size of frontier " +frontier.size());
+    	
+    	//System.out.println("I am first testing the size of optimalpath " +optimalpath.size());
+    	
+    	//System.out.println("I am first testing the optimal predecessor for " +optimalpred.get(state.getExit().getId()));
+    		
+    	
+    	//System.out.println("I am first the first element on " +optimalpath.peek());
+    	
+    	
+    	//System.out.println("I first popped node is " +optimalpath.pop().getId());
+    	
+    	System.out.println("Is this working or not");
+    	
+    	//optimalpath.pop();
+    	
+       //while (!optimalpath.isEmpty()){
+    		
+        	//Long moving = optimalpath.pop();
+    		//System.out.println("Moving out of " );
+    		//state.moveTo(optimalpred.get(moving));
+    		
+    	//}
+    	
+    	
+    	
+    	//state.getVertices().stream().forEach();;
+    	
+     	
+    	
+        //TODO: Escape from the cavern before time runs out
     }
     
     
@@ -208,7 +256,7 @@ public class Explorer {
     	
     	private Node node;
     	
-    	private Integer distance;
+    	private int distance;
     	
     	
     	private Node predecessor;
@@ -218,7 +266,7 @@ public class Explorer {
     		return this.node;
     	}
     	
-    	public Integer getDistance(){
+    	public int getDistance(){
     		return this.distance;
     	}
     	
@@ -232,12 +280,12 @@ public class Explorer {
     		
     	}
     	
-    	public SuperNode(Node node, Integer distance, Node predecessor){
+    	public SuperNode(Node node, int distance, Node predecessor){
     		this.setSuperNode(node,distance,predecessor);
     	}
     	
     	
-    	public void setSuperNode(Node node, Integer distance, Node predecessor){
+    	public void setSuperNode(Node node, int distance, Node predecessor){
     		this.setNode(node);
     		this.setDistance(distance);
     		this.setPredecessor(predecessor);
@@ -248,17 +296,12 @@ public class Explorer {
     	}
     	
     	
-    	public void setDistance(Integer distance){
+    	public void setDistance(int distance){
     		this.distance= distance;
     	}
     	
     	public void setPredecessor(Node predecessor){
     		this.predecessor = predecessor;
-    	}
-    	
-    	public void setDistancePredecessor(Integer distance,Node predecessor){
-    		this.setDistance(distance);
-    		this.setPredecessor(predecessor);
     	}
     	
     	
