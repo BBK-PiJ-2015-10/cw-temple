@@ -14,6 +14,12 @@ import java.util.Collection;
 
 import java.util.Optional;
 
+/*Performance Improvements:
+ *  - I am going to add a Map where each Node will have how much golds have its neighbors and make that a priority.
+ *  - Need to figure out how to use two max. Maybe on gets the max and the second filters on the max.
+ *  - Hence, I can filter for max gold and then for unvisited.
+ */
+
 
 public class SeekGold {
 
@@ -37,8 +43,7 @@ public class SeekGold {
 	
 	Predicate<Node> reachable = p -> superEvalNodeMap.get(p).getDistanceToExit() < (state.getTimeRemaining()-getDistanceToNode(p));
 	
-	
-	Predicate<Node> hasGold = p -> nodeGoldMap.get(p) > 0;
+	//Predicate<Node> hasGold = p -> nodeGoldMap.get(p) > 0;
 	
 
 	
@@ -66,9 +71,6 @@ public class SeekGold {
 	}
 	
 	
-	
-	
-	
 	public void populateMaps(){
 		
 		state.getVertices().stream().filter(navigable).forEach((n) ->nodeGoldMap.put(n,n.getTile().getOriginalGold()));
@@ -78,44 +80,34 @@ public class SeekGold {
 		state.getVertices().stream().filter(navigable).forEach((n) ->superEvalNodeMap.put(n,new SuperEvalNode(n,new OptimalFromToPath(state,n,state.getExit()))));
 		
 		state.getVertices().stream().filter(navigable).forEach((n) ->visitedNodeMap.put(n,0));
-		
 					
 	}
 	
 	
 	public void seek(){
 		
-		System.out.println("I have this extra time: " +(state.getTimeRemaining() - superEvalNodeMap.get(state.getCurrentNode()).getDistanceToExit()));
+		//populateMaps();
 		
-		//int counter=0;
+		System.out.println("I have this extra time: " +(state.getTimeRemaining() - superEvalNodeMap.get(state.getCurrentNode()).getDistanceToExit()));
 		
 		while (state.getTimeRemaining() >= superEvalNodeMap.get(state.getCurrentNode()).getDistanceToExit() ){
 			
-			
-			//neighborsMap.get(state.getCurrentNode()).stream().forEach((n) -> System.out.println(superEvalNodeMap.get(n).getDistanceToExit()));;
-			
 			Optional<Node> nextNode = neighborsMap.get(state.getCurrentNode()).stream().filter(reachable)
-			.min((p1,p2)-> visitedNodeMap.get(p1).compareTo(visitedNodeMap.get(p2)));
-		    //.max((p1,p2)-> nodeGoldMap.get(p1).compareTo(nodeGoldMap.get(p2)))		
+			.min((p1,p2)-> visitedNodeMap.get(p1).compareTo(visitedNodeMap.get(p2)));		
 			//.max((p1,p2)-> nodeGoldMap.get(p1).compareTo(nodeGoldMap.get(p2)));
 			if (nextNode.isPresent()){
 				state.moveTo(nextNode.get());
 				visitedNodeMap.put(state.getCurrentNode(),visitedNodeMap.get(state.getCurrentNode())+1);
-				//counter ++;
-				//System.out.println("This is my time inside the if : " +counter);
 				if (nodeGoldMap.get(state.getCurrentNode()) > 0) {
 		    		state.pickUpGold();
 		    		nodeGoldMap.put(state.getCurrentNode(),0);
 		    	 }
 			}
+			
 			else {
 				superEvalNodeMap.get(state.getCurrentNode()).getEscapeMinPath().run();
 				
-			}
-			
-			//superEvalNodeMap.get(state.getCurrentNode()).getEscapeMinPath().run();
-			
-					
+			}		
 		}
 		
 	

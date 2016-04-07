@@ -50,7 +50,12 @@ public class Explorer {
      * @param state the information available at the current state
      */
     public void explore(ExplorationState state) {
-        Set<Long> seen = new LinkedHashSet<>();
+        
+    	SmartExploration smartExploration = new SmartExploration(state);
+    	smartExploration.run();
+    	
+    	/*
+    	Set<Long> seen = new LinkedHashSet<>();
         Stack<Long> compass = new Stack<>();
 
         while (state.getDistanceToTarget() != 0) {
@@ -78,8 +83,11 @@ public class Explorer {
             state.moveTo(next);
             System.out.println("\t to: " + state.getCurrentLocation());
             
-           
         }
+        
+        */
+        
+        
     }
 
     /**
@@ -107,9 +115,6 @@ public class Explorer {
      */    
     public void escape(EscapeState state) {
     	
-    	
-    	
-    	
     	SeekGold seekgold = new SeekGold(state);
     	seekgold.populateMaps();
     	seekgold.seek();
@@ -117,12 +122,8 @@ public class Explorer {
     	
     	//OptimalFromToPath optimal = new OptimalFromToPath(state,state.getCurrentNode(),state.getExit());
     	
-    	//int extrasteps = state.getTimeRemaining()-optimal.calculateminpath();
-    	//System.out.println("I will end up with an additional " +extrasteps);
-    	
     	//optimal.calculateminpath();
     	//optimal.run();
-    	//System.out.println("The extra steps available are" +state.getTimeRemaining();
     	
     	
     }
