@@ -9,13 +9,21 @@ import java.util.Stack;
 import java.util.function.Predicate;
 
 
-public class OptimalPath {
+public class OptimalFromToPath {
 	
 	private EscapeState state;
 	
-	public OptimalPath(EscapeState state){
+	private Node startNode;
+	
+	private Node targetNode;
+	
+	public OptimalFromToPath(EscapeState state, Node startNode, Node targetNode){
 		this.state=state;
+		this.startNode = startNode;
+		this.targetNode = targetNode;
 	}
+	
+	
 	
 	PriorityQueue<SuperNode> frontier = new PriorityQueueImpl<>();
 	
@@ -32,7 +40,7 @@ public class OptimalPath {
 		
 		state.getVertices().stream().filter(navigable).forEach((n) ->mapper.put(n.getId(),new SuperNode(n,null,null)));
 		
-		SuperNode starting = mapper.get(state.getCurrentNode().getId());
+		SuperNode starting = mapper.get(startNode.getId());
 
 		starting.setDistance(0);
 		frontier.add(starting,0);
@@ -73,9 +81,9 @@ public class OptimalPath {
 	
 	public void run(){
 		
-		calculateminpath();
-	    sequence.push(state.getExit());	
-	    SuperNode temp = mapper.get(state.getExit().getId());
+		//calculateminpath();
+	    sequence.push(targetNode);	
+	    SuperNode temp = mapper.get(targetNode.getId());
 	    while (temp != mapper.get(state.getCurrentNode().getId()) )
 		      {
 			      sequence.push(temp.getPrede());
@@ -99,7 +107,7 @@ public class OptimalPath {
 	}
 	
 	public int getDistance(){
-		return mapper.get(state.getExit().getId()).getDistance();
+		return mapper.get(targetNode.getId()).getDistance();
 	}
 	
 	public int getDistanceToExit(Node node){

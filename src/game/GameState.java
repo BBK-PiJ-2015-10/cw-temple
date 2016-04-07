@@ -185,6 +185,7 @@ public class GameState implements ExplorationState, EscapeState {
      */
     private int computeTimeToEscape() {
         int minTimeToEscape = escapeCavern.minPathLengthToTarget(position);
+        //System.out.println("The minTimeToEscape is " +minTimeToEscape);
         return (int) (minTimeToEscape + EXTRA_TIME_FACTOR * (Cavern.MAX_EDGE_WEIGHT + 1) * escapeCavern.numOpenTiles() / 2);
 
     }

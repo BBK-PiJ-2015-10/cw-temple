@@ -1,5 +1,5 @@
-package student;
 
+package student;
 
 import game.EscapeState;
 import game.ExplorationState;
@@ -107,8 +107,22 @@ public class Explorer {
      */    
     public void escape(EscapeState state) {
     	
-    	OptimalPath optimal = new OptimalPath(state);
-    	optimal.run();
+    	
+    	
+    	
+    	SeekGold seekgold = new SeekGold(state);
+    	seekgold.populateMaps();
+    	seekgold.seek();
+    	
+    	
+    	//OptimalFromToPath optimal = new OptimalFromToPath(state,state.getCurrentNode(),state.getExit());
+    	
+    	//int extrasteps = state.getTimeRemaining()-optimal.calculateminpath();
+    	//System.out.println("I will end up with an additional " +extrasteps);
+    	
+    	//optimal.calculateminpath();
+    	//optimal.run();
+    	//System.out.println("The extra steps available are" +state.getTimeRemaining();
     	
     	
     }
