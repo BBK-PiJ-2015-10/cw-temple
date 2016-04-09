@@ -11,9 +11,7 @@ public class SuperNode {
 	
 	private Integer distance;
 	
-	
 	private Node predecessor;
-	
 	
 	public Node getNode(){
 		return this.node;

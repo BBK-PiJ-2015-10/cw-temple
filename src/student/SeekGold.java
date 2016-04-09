@@ -77,7 +77,7 @@ public class SeekGold {
 		
 		state.getVertices().stream().filter(navigable).forEach((n) ->neighborsMap.put(n,getNeighbors(n)));
 		
-		state.getVertices().stream().filter(navigable).forEach((n) ->superEvalNodeMap.put(n,new SuperEvalNode(n,new OptimalFromToPath(state,n,state.getExit()))));
+		state.getVertices().stream().filter(navigable).forEach((n) ->superEvalNodeMap.put(n,new SuperEvalNode(n,new OptimalPathDijkstraImpl(state,n,state.getExit()))));
 		
 		state.getVertices().stream().filter(navigable).forEach((n) ->visitedNodeMap.put(n,0));
 					
@@ -88,7 +88,7 @@ public class SeekGold {
 		
 		//populateMaps();
 		
-		System.out.println("I have this extra time: " +(state.getTimeRemaining() - superEvalNodeMap.get(state.getCurrentNode()).getDistanceToExit()));
+		//System.out.println("I have this extra time: " +(state.getTimeRemaining() - superEvalNodeMap.get(state.getCurrentNode()).getDistanceToExit()));
 		
 		while (state.getTimeRemaining() >= superEvalNodeMap.get(state.getCurrentNode()).getDistanceToExit() ){
 			

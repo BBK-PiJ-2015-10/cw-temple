@@ -53,40 +53,7 @@ public class Explorer {
         
     	SmartExploration smartExploration = new SmartExploration(state);
     	smartExploration.run();
-    	
-    	/*
-    	Set<Long> seen = new LinkedHashSet<>();
-        Stack<Long> compass = new Stack<>();
-
-        while (state.getDistanceToTarget() != 0) {
-            
-            // add current position to seen items
-            compass.push(state.getCurrentLocation());
-            seen.add(state.getCurrentLocation());
-               
-            Predicate<NodeStatus> unvisited = p -> seen.contains(p.getId()) == false;
-        
-            Long next;
-       
-            Optional<NodeStatus> nextpossible = state.getNeighbours().stream().filter(unvisited).min((p1,p2)-> p1.compareTo(p2));
-             
-            if (nextpossible.isPresent()){
-            	next = nextpossible.get().getId();
-            }
-            else {
-            	compass.pop();
-            	next = compass.pop();	
-            }
-            
-            System.out.println("Moving to tile with id: " + next);
-            System.out.println("Moving from position: " + state.getCurrentLocation());
-            state.moveTo(next);
-            System.out.println("\t to: " + state.getCurrentLocation());
-            
-        }
-        
-        */
-        
+    	    
         
     }
 
@@ -118,13 +85,7 @@ public class Explorer {
     	SeekGold seekgold = new SeekGold(state);
     	seekgold.populateMaps();
     	seekgold.seek();
-    	
-    	
-    	//OptimalFromToPath optimal = new OptimalFromToPath(state,state.getCurrentNode(),state.getExit());
-    	
-    	//optimal.calculateminpath();
-    	//optimal.run();
-    	
+        	
     	
     }
     

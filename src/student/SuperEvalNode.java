@@ -11,7 +11,7 @@ public class SuperEvalNode {
 	
 	private Integer distanceToExit;
 		
-	private OptimalFromToPath escapeMinPath;
+	private OptimalPath escapeMinPath;
 		
 	public Node getNode(){
 		return this.node;
@@ -21,7 +21,7 @@ public class SuperEvalNode {
 		return this.distanceToExit;
 	}
 	
-	public OptimalFromToPath getEscapeMinPath(){
+	public OptimalPath getEscapeMinPath(){
 		return this.escapeMinPath;
 	}
 	
@@ -30,7 +30,7 @@ public class SuperEvalNode {
 		
 	}
 	
-	public SuperEvalNode(Node node,OptimalFromToPath path ){
+	public SuperEvalNode(Node node,OptimalPath path ){
 		this.setNode(node);
 		this.setOptimalFromToPath(path);
 		this.setDistanceToExit(this.escapeMinPath.calculateminpath());
@@ -43,7 +43,7 @@ public class SuperEvalNode {
 	}
 	
 		
-	public void setOptimalFromToPath(OptimalFromToPath escapeMinPath){
+	public void setOptimalFromToPath(OptimalPath escapeMinPath){
 		this.escapeMinPath = escapeMinPath;
 	}
 	
@@ -52,7 +52,7 @@ public class SuperEvalNode {
 	}
 	
 	
-	
+
 	@Override
     public boolean equals(Object ob) {
         if (ob == this) {
@@ -70,6 +70,6 @@ public class SuperEvalNode {
         return Objects.hash(this.getNode().getId());
     }
 	
-	
+
 
 }
