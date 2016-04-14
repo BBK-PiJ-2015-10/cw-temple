@@ -37,6 +37,8 @@ public class SeekGold {
 	
 	Map<Node, Integer> visitedNodeMap = new HashMap<>();
 	
+	//Map<Node, Integer> nodeNeighborhoodGoldMap = new HashMap<>();
+	
 	
 	 
 	Predicate<Node> navigable = p -> p.getTile().getType().isOpen() == true;
@@ -70,6 +72,13 @@ public class SeekGold {
 		return neighbors;
 	}
 	
+		
+	
+	//public int calculateNeighboorHoodGold(Node node){
+		//Collection<Node> neighbors = node.getNeighbours();
+		//return neighbors.stream().mapToInt((n)-> nodeGoldMap.get(n)).sum() + nodeGoldMap.get(node);
+	//}
+	
 	
 	public void populateMaps(){
 		
@@ -80,6 +89,8 @@ public class SeekGold {
 		state.getVertices().stream().filter(navigable).forEach((n) ->superEvalNodeMap.put(n,new SuperEvalNode(n,new OptimalPathDijkstraImpl(state,n,state.getExit()))));
 		
 		state.getVertices().stream().filter(navigable).forEach((n) ->visitedNodeMap.put(n,0));
+		
+		//state.getVertices().stream().filter(navigable).forEach((n) ->nodeNeighborhoodGoldMap.put(n,calculateNeighboorHoodGold(n)));
 					
 	}
 	
@@ -93,8 +104,13 @@ public class SeekGold {
 		while (state.getTimeRemaining() >= superEvalNodeMap.get(state.getCurrentNode()).getDistanceToExit() ){
 			
 			Optional<Node> nextNode = neighborsMap.get(state.getCurrentNode()).stream().filter(reachable)
-			.min((p1,p2)-> visitedNodeMap.get(p1).compareTo(visitedNodeMap.get(p2)));		
-			//.max((p1,p2)-> nodeGoldMap.get(p1).compareTo(nodeGoldMap.get(p2)));
+			.min((p1,p2)-> visitedNodeMap.get(p1).compareTo(visitedNodeMap.get(p2)));
+			
+			//Optional<Node> nextNode = neighborsMap.get(state.getCurrentNode()).stream().filter(reachable)
+			//.max((p1,p2)-> nodeNeighborhoodGoldMap.get(p1).compareTo(nodeNeighborhoodGoldMap.get(p2)));
+			
+			
+			
 			if (nextNode.isPresent()){
 				state.moveTo(nextNode.get());
 				visitedNodeMap.put(state.getCurrentNode(),visitedNodeMap.get(state.getCurrentNode())+1);
