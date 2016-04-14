@@ -16,18 +16,18 @@ public class OptimalPathDijkstraImpl implements OptimalPath {
 	
 	/**
 	 * The state phase is injected in this class to be able to navigate and leverage
-	 * the methods of the EscapeState class. 
+	 * its methods. 
 	 */
 	private EscapeState state;
 	
 	/**
-	 * This is the starting point(node) or point(node) of departure.
+	 * This is the starting/departure point(node).
 	 */
 	private Node startNode;
 	
 	/**
-	* This is the ending point(no) or point(node) where we intend to arrive.
-	*/
+	 * This is the ending/target point(node).
+	 */
 	private Node targetNode;
 	
 	/**
@@ -44,43 +44,44 @@ public class OptimalPathDijkstraImpl implements OptimalPath {
 	
 	
 	/**
-	* This PriorityQueue is the auxiliary PriorityQueue data structure being used to implement Djikstra
-	* solution. A SuperNode is class that contains metadata about a Node.
-	* 
-	*/
+	 * This PriorityQueue is the auxiliary PriorityQueue data structure being used to implement Djikstra
+	 * solution. A SuperNode is class that contains Metadata about a Node. 
+	 */
 	PriorityQueue<SuperNode> frontier = new PriorityQueueImpl<>();
 	
 	/**
-	* This Map helps to stored metadata information about every Node in the graph. The Long key is
-	* the unique id of every Node in the graph.
-	*/
+	 * This Map helps to stored Metadata information about every Node in the graph. The Long key is
+	 * the unique id of every Node in the graph.
+	 */
 	Map<Long, SuperNode> mapper = new HashMap<>();
 	
 	/**
-	* This Map is used to register the distance between the startNode and every node in the graph.
-	*/
+	 * This Map is used to register the distance between the startNode and every node in the graph.
+	 */
 	Map<Long, Integer> pathWeights = new HashMap<>();
 	
 	/**
-	* This Stack of Nodes is used to record the optimal path sequence trace of navigation of nodes. 
-	*/
+	 * This Stack of Nodes is used to record the optimal path sequence trace of navigation of nodes. 
+	 */
 	Stack<Node> sequence = new Stack<>();
 	
 	/**
-	* This predicate serves to filter out any non-navigable Nodes.
-	*/
+	 * This predicate serves to filter out any non-navigable Nodes.
+	 */
 	Predicate<Node> navigable = p -> p.getTile().getType().isOpen() == true;
 	
 	/**
-	* This is the implementation of the method from the OptimalPath interface. Its output is the 
-	* optimal minimal distance between the startNode and targetNode based on Djistra's optimal
-	* path algorithm.
-	*/
+	 * This is the implementation of the method from the OptimalPath interface. Its output is the 
+	 * optimal minimal distance between the startNode and targetNode based on Djistra's optimal
+	 * path algorithm.
+	 */
 	@Override
 	public int calculateminpath(){
 	
-		//The below collection manipulation creates a SuperNode metadata for each Node in the Escape state and stores it
-		// in the mapper Map. 	
+        /*
+		 *The below collection manipulation creates a SuperNode Metadata for each Node in the Escape state and stores it
+		 *in the mapper Map.
+		 */  	
 		state.getVertices().stream().filter(navigable).forEach((n) ->mapper.put(n.getId(),new SuperNode(n,null,null)));
 		
 		SuperNode starting = mapper.get(startNode.getId());
@@ -88,11 +89,11 @@ public class OptimalPathDijkstraImpl implements OptimalPath {
 		frontier.add(starting,0);
 		pathWeights.put(starting.getNode().getId(),0);
 		
-		//
-		// The below section goes thru every Node and facilitates the metadata population of every SuperNode.
-		// As well as the calculation and update of the distance between every Node and the start Node. In
-		// addition, it updates the PriorityQueue frontier.
-		//
+		/*
+		 * The below section goes thru every Node and facilitates the metadata population of every SuperNode.
+		 * As well as the calculation and update of the distance between every Node and the start Node. In
+		 * addition, it updates the PriorityQueue frontier.
+		 */
 		while (frontier.size()!=0){
     		SuperNode current = frontier.poll();
     		int cWeight = pathWeights.get(current.getNode().getId());
@@ -123,10 +124,10 @@ public class OptimalPathDijkstraImpl implements OptimalPath {
 	}
 	
 	/**
-	* Implementation of run from OptimalPath interface.
-	* It leverages the Stack<Node> sequence and the mapper Map to navigate from
-	* the current Node to the Target Node. It picks up gold on its way.
-	*/
+	 * Implementation of run from OptimalPath interface.
+	 * It leverages the Stack<Node> sequence and the mapper Map to navigate from
+	 * the current Node to the Target Node. It picks up gold on its way.
+	 */
 	@Override
 	public void run(){
 		
@@ -151,9 +152,9 @@ public class OptimalPathDijkstraImpl implements OptimalPath {
 	}
 	
 	/**
-	* This method returns the distance between a particular Node entered as a parameter
-	* and the starting Node of this state.
-	*/
+	 * This method returns the distance between a particular Node entered as a parameter
+	 * and the starting Node of this state.
+	 */
 	public int getDistance(Node node){
 		return mapper.get(node.getId()).getDistance();
 	}

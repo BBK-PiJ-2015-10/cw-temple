@@ -3,18 +3,7 @@ package student;
 
 import game.EscapeState;
 import game.ExplorationState;
-import game.NodeStatus;
 
-
-import java.util.LinkedHashSet;
-
-import java.util.Optional;
-import java.util.Set;
-import java.util.Stack;
-
-
-
-import java.util.function.Predicate;
 
 
 public class Explorer {

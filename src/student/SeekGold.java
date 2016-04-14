@@ -1,43 +1,60 @@
 package student;
 
 import java.util.HashMap;
-
 import java.util.Map;
 import java.util.function.Predicate;
-
 import game.Edge;
 import game.EscapeState;
 import game.Node;
-
 import java.util.ArrayList;
 import java.util.Collection;
-
 import java.util.Optional;
 
-/*Performance Improvements:
- *  - I am going to add a Map where each Node will have how much golds have its neighbors and make that a priority.
- *  - Need to figure out how to use two max. Maybe on gets the max and the second filters on the max.
- *  - Hence, I can filter for max gold and then for unvisited.
+
+/**
+ * @author YasserAlejandro
+ * A class that provides an algorithmic strategy for the search of Gold on an escape state.
+ *
  */
-
-
 public class SeekGold {
 
+	/*
+	 * This is the EscapeState injected in the class that will facilitate the navigation and whose
+	 *methods are leveraged different sections of this class.
+	 */
 	private EscapeState state;
 	
+	/*
+	 *This is a simple Constructor.
+	 */
 	public SeekGold(EscapeState state) {
 		this.state = state;
 	}
 	
+	/*
+	 * This is a Map that keeps track of the each Node and its gold level at a particular point in time.
+	 * Not the original gold of each node, but the actual gold level.  
+	 */
 	Map<Node, Integer> nodeGoldMap = new HashMap<>();
 	
+	/*
+	 *  This is a map that contains each Node in the graph and its associated neighbors. It is used to 
+	 *  navigate thru the graph.  
+	 */
 	Map<Node, Collection<Node> > neighborsMap = new HashMap<>();
 	
+	/*
+	 *
+	 */
 	Map<Node, SuperEvalNode> superEvalNodeMap = new HashMap<>();
 	
+	/*
+	 * This is a Map that keeps track on how many times a Node has been visited. It is used to facilitate
+	 * and optimize navigation.
+	 */
 	Map<Node, Integer> visitedNodeMap = new HashMap<>();
 	
-	//Map<Node, Integer> nodeNeighborhoodGoldMap = new HashMap<>();
+	
 	
 	
 	 
@@ -45,7 +62,7 @@ public class SeekGold {
 	
 	Predicate<Node> reachable = p -> superEvalNodeMap.get(p).getDistanceToExit() < (state.getTimeRemaining()-getDistanceToNode(p));
 	
-	//Predicate<Node> hasGold = p -> nodeGoldMap.get(p) > 0;
+
 	
 
 	
@@ -74,12 +91,6 @@ public class SeekGold {
 	
 		
 	
-	//public int calculateNeighboorHoodGold(Node node){
-		//Collection<Node> neighbors = node.getNeighbours();
-		//return neighbors.stream().mapToInt((n)-> nodeGoldMap.get(n)).sum() + nodeGoldMap.get(node);
-	//}
-	
-	
 	public void populateMaps(){
 		
 		state.getVertices().stream().filter(navigable).forEach((n) ->nodeGoldMap.put(n,n.getTile().getOriginalGold()));
@@ -90,26 +101,18 @@ public class SeekGold {
 		
 		state.getVertices().stream().filter(navigable).forEach((n) ->visitedNodeMap.put(n,0));
 		
-		//state.getVertices().stream().filter(navigable).forEach((n) ->nodeNeighborhoodGoldMap.put(n,calculateNeighboorHoodGold(n)));
 					
 	}
 	
 	
 	public void seek(){
 		
-		//populateMaps();
-		
-		//System.out.println("I have this extra time: " +(state.getTimeRemaining() - superEvalNodeMap.get(state.getCurrentNode()).getDistanceToExit()));
 		
 		while (state.getTimeRemaining() >= superEvalNodeMap.get(state.getCurrentNode()).getDistanceToExit() ){
 			
 			Optional<Node> nextNode = neighborsMap.get(state.getCurrentNode()).stream().filter(reachable)
 			.min((p1,p2)-> visitedNodeMap.get(p1).compareTo(visitedNodeMap.get(p2)));
-			
-			//Optional<Node> nextNode = neighborsMap.get(state.getCurrentNode()).stream().filter(reachable)
-			//.max((p1,p2)-> nodeNeighborhoodGoldMap.get(p1).compareTo(nodeNeighborhoodGoldMap.get(p2)));
-			
-			
+						
 			
 			if (nextNode.isPresent()){
 				state.moveTo(nextNode.get());
