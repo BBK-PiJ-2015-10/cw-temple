@@ -69,7 +69,7 @@ public class Explorer {
      */    
     public void escape(EscapeState state) {
     	
-    	EscapeStrategy informedGoldSeekOptimizer= new InformedGoldSeekExitOptimizer(state);
+    	EscapeStrategy informedGoldSeekOptimizer= new EscapeInformedGoldSeekExitOpt(state);
     	informedGoldSeekOptimizer.execute();
         	
     	

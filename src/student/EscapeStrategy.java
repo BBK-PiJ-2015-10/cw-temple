@@ -8,7 +8,7 @@ package student;
 
 public interface EscapeStrategy {
 
-	/*
+	/**
 	 * Executes a defined Exit node seeking strategy.
 	 */
 	public void execute();

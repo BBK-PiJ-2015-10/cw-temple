@@ -12,7 +12,7 @@ import java.util.function.Predicate;
  * @author YasserAlejandro
  * An implementation of OptimalPath using Dijktra's algorithm
  */
-public class OptimalPathDijkstraImpl implements OptimalPath {
+public class OptimalPathDijkstra implements OptimalPath {
 	
 	/**
 	 * The state phase is injected in this class to be able to navigate and leverage
@@ -36,7 +36,7 @@ public class OptimalPathDijkstraImpl implements OptimalPath {
 	 * @param startNode
 	 * @param targetNode
 	 */
-	public OptimalPathDijkstraImpl(EscapeState state, Node startNode, Node targetNode){
+	public OptimalPathDijkstra(EscapeState state, Node startNode, Node targetNode){
 		this.state=state;
 		this.startNode = startNode;
 		this.targetNode = targetNode;

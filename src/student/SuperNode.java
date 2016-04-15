@@ -11,30 +11,30 @@ import game.Node;
  */
 public class SuperNode {
 	
-	/*
+	/**
 	 *This is the Node whose Metadata we will capture
 	 */
 	private Node node;
 	
-	/*
+	/**
 	 *This field is to capture the distance between the Node field in this SuperNode and a Target Node
 	 */
 	private Integer distance;
 	
-	/*
-	*This field captures the predecessor of the Node in this SuperNode. This predecessor node needs to
-	*be visited before the Node in the SuperNode to go from the starting point to the target point.
-	*/
+	/**
+	 *This field captures the predecessor of the Node in this SuperNode. This predecessor node needs to
+	 *be visited before the Node in the SuperNode to go from the starting point to the target point.
+	 */
 	private Node predecessor;
 	
-	/*
+	/**
 	 *This is a getter method that returns the Node field in this SuperNode.
 	 */
 	public Node getNode(){
 		return this.node;
 	}
 	
-	/*
+	/**
 	 *This method returns the distance between this SuperNode Node and the starting node.
 	 */
 	public Integer getDistance(){
@@ -42,27 +42,27 @@ public class SuperNode {
 	}
 	
 	
-	/*This getter method returns the Predecessor Node field associated to this SuperNode.
-	 *
+	/**
+	 * This getter method returns the Predecessor Node field associated to this SuperNode.
 	 */
 	public Node getPrede(){
 		return this.predecessor;
 	}
 	
-	/*
+	/**
 	 *This is a basic constructor.
 	 */
 	public SuperNode(){		
 	}
 	
-	/*
+	/**
 	 *This is a more comprehensive constructor with all the fields in the class.
 	 */
 	public SuperNode(Node node, Integer distance, Node predecessor){
 		this.setSuperNode(node,distance,predecessor);
 	}
 	
-	/*
+	/**
 	 *This is a setter for node, distance, and predecessor fields.
 	 */
 	public void setSuperNode(Node node, Integer distance, Node predecessor){
@@ -71,28 +71,28 @@ public class SuperNode {
 		this.setPredecessor(predecessor);
 	}
 	
-	/*
+	/**
 	 * This is a setter for node.
 	 */
 	public void setNode(Node node){
 		this.node = node;
 	}
 	
-	/*
+	/**
 	 *This is a setter for the distance.
 	 */
 	public void setDistance(Integer distance){
 		this.distance= distance;
 	}
 	
-	/*
+	/**
 	 *This is a setter for the predecessor.
 	 */
 	public void setPredecessor(Node predecessor){
 		this.predecessor = predecessor;
 	}
 	
-	/*
+	/**
 	 *This is a setter for distance and predecessor.
 	 */
 	public void setDistancePredecessor(Integer distance,Node predecessor){
@@ -101,7 +101,7 @@ public class SuperNode {
 	}
 	
 	
-	/*
+	/**
 	 *A local implementation of the equals method done to facilitate Testing.
 	 */
 	@Override
@@ -115,7 +115,7 @@ public class SuperNode {
         return this.getNode().getId() == ((SuperNode) ob).getNode().getId();
     }
 	
-	/*
+	/**
 	 *A local implementation of the hashCode method done to facilitate Testing.
 	 */
 	@Override

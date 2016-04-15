@@ -22,7 +22,7 @@ import java.util.Optional;
  * It is ExitOptimizer in the sense that once it knows that it needs to head to the Exit node, it uses
  * the minimal path strategy to reach that Exit node.
  */
-public class InformedGoldSeekExitOptimizer implements EscapeStrategy {
+public class EscapeInformedGoldSeekExitOpt implements EscapeStrategy {
 
 	/**
 	 * This is the EscapeState state injected in the class that will facilitate the navigation and whose
@@ -31,9 +31,9 @@ public class InformedGoldSeekExitOptimizer implements EscapeStrategy {
 	private EscapeState state;
 	
 	/**
-	 *This is a simple Constructor.
+	 *This is the Constructor, takes an EscapteState as an argument.
 	 */
-	public InformedGoldSeekExitOptimizer(EscapeState state) {
+	public EscapeInformedGoldSeekExitOpt(EscapeState state) {
 		this.state = state;
 	}
 	
@@ -100,6 +100,9 @@ public class InformedGoldSeekExitOptimizer implements EscapeStrategy {
 	/**
 	 * This method is used to gather and provide all the navigable neighbors of any Node.
 	 * Navigable means any node that is open.
+	 * I could have used the getNeighbors method from the Node class and filter to Navigable ones.
+	 * However, the improvement in the performance by the use of this method is significant in the
+	 * gold collection process. 
 	 * @param any node whose neighbor's we wish to determine
 	 * @return a Collection of Nodes with all the neighbor's of the node specified on @param.
 	 */
@@ -113,6 +116,9 @@ public class InformedGoldSeekExitOptimizer implements EscapeStrategy {
 		}	
 		return neighbors;
 	}
+	
+	
+	
 	
 	/**
 	 * This method is to populate all the different data structures being used in this class.
@@ -131,10 +137,11 @@ public class InformedGoldSeekExitOptimizer implements EscapeStrategy {
 		 */
 		state.getVertices().stream().filter(navigable).forEach((n) ->neighborsMap.put(n,getNeighbors(n)));
 		
+	
 		/*
 		 * This stream excludes any non-navigable nodes. It populates a Map of each Node and its Metadata Node. 
 		 */
-		state.getVertices().stream().filter(navigable).forEach((n) ->superEvalNodeMap.put(n,new SuperEvalNode(n,new OptimalPathDijkstraImpl(state,n,state.getExit()))));
+		state.getVertices().stream().filter(navigable).forEach((n) ->superEvalNodeMap.put(n,new SuperEvalNode(n,new OptimalPathDijkstra(state,n,state.getExit()))));
 		
 		/*
 		 * This streams excludes any non-navigable nodes. It populates a Map of each Node and a counter of the visits to that
@@ -164,7 +171,7 @@ public class InformedGoldSeekExitOptimizer implements EscapeStrategy {
 		 */
 		while (state.getTimeRemaining() >= superEvalNodeMap.get(state.getCurrentNode()).getDistanceToExit() ){
 			
-			/*
+			/**
 			 * Returns an Optional<Node> neighbor node of the state's current Node, that is reachable
 			 * (refer to the reachable predicate for definition) and select the Node that has been visited
 			 * the least in the past. This is to avoid navigating through a node that has been visited (no gold left)
