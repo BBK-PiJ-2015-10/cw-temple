@@ -1,11 +1,11 @@
 package student;
 
 import java.util.Objects;
-
 import game.Node;
 
 /**
  * @author YasserAlejandro
+ * 
  * This is a class created to hold Metadata about a Node. It was created to facilitate the
  * implementation of the Djistra algorithm to find and navigate through the optimal path between two nodes.
  */

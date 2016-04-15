@@ -2,6 +2,7 @@ package student;
 
 /**
  * @author YasserAlejandro
+ * 
  * OptimalPath will provide you the optimal path between two points.
  */
 public interface OptimalPath {
@@ -14,7 +15,7 @@ public interface OptimalPath {
 	public int calculateminpath();
 	
 	/**
-	 * Will execute a minimal path trajectory calculated in calculatemintpath. 
+	 * Will execute a minimal path trajectory that was used to calculate the minimal path distance. 
 	 */
 	public void run();
 	

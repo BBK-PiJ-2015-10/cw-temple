@@ -10,6 +10,7 @@ import game.NodeStatus;
 
 /** 
  * @author YasserAlejandro
+ * 
  * This class is an implementation of the ExplorationStrategy interface using the a Depth-First-Search algorithm
  * aided by an optimizer based on the minimal distance to the target node.
  */
@@ -44,7 +45,7 @@ public class ExplorationDepthFirstSearch implements ExplorationStrategy {
 	* This is the execution of the depth-first-search strategy
 	**/
 	@Override
-	public void run(){
+	public void execute(){
 		
 		/*
 		 * The while statement guarantees navigation until the target is reached.	

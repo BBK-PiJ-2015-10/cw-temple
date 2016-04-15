@@ -4,8 +4,6 @@ package student;
 import game.EscapeState;
 import game.ExplorationState;
 
-
-
 public class Explorer {
 
     /**
@@ -41,7 +39,7 @@ public class Explorer {
     public void explore(ExplorationState state) {
         
     	ExplorationStrategy optimizedDepthFirstSearch = new ExplorationDepthFirstSearch(state);
-    	optimizedDepthFirstSearch.run();
+    	optimizedDepthFirstSearch.execute();
     	    
         
     }
@@ -71,9 +69,8 @@ public class Explorer {
      */    
     public void escape(EscapeState state) {
     	
-    	SeekGold seekgold = new SeekGold(state);
-    	seekgold.populateMaps();
-    	seekgold.seek();
+    	EscapeStrategy informedGoldSeekOptimizer= new InformedGoldSeekExitOptimizer(state);
+    	informedGoldSeekOptimizer.execute();
         	
     	
     }

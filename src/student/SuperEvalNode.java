@@ -5,6 +5,7 @@ import game.Node;
 
 /**
  * @author YasserAlejandro
+ * 
  * A class to hold Metadata information about a particular Node. It stores the distance of the Node
  * to the Exit node of the graph and its OptimalPath to that Exit node. 
  */

@@ -13,9 +13,16 @@ import java.util.Optional;
 
 /**
  * @author YasserAlejandro
- * A class that provides an algorithmic strategy for the search of Gold in an escape state.
+ * 
+ * A class that provides an implementation of an EscapeStrategy.
+ * It is informed in the sense that it has four data structures (Maps) to gather as much information
+ * as possible about all the nodes in the cavern and leverage this information in the navigation process.
+ * It is GoldSeek oriented in the sense that it looks for as much gold as possible until it knows that it
+ * needs to head to the Exit node to avoid being trapped in the cavern.
+ * It is ExitOptimizer in the sense that once it knows that it needs to head to the Exit node, it uses
+ * the minimal path strategy to reach that Exit node.
  */
-public class SeekGold {
+public class InformedGoldSeekExitOptimizer implements EscapeStrategy {
 
 	/**
 	 * This is the EscapeState state injected in the class that will facilitate the navigation and whose
@@ -26,7 +33,7 @@ public class SeekGold {
 	/**
 	 *This is a simple Constructor.
 	 */
-	public SeekGold(EscapeState state) {
+	public InformedGoldSeekExitOptimizer(EscapeState state) {
 		this.state = state;
 	}
 	
@@ -55,7 +62,6 @@ public class SeekGold {
 	 * frequency of visits.
 	 */
 	Map<Node, Integer> visitedNodeMap = new HashMap<>();
-	
 	
 	
 	/**
@@ -109,8 +115,7 @@ public class SeekGold {
 	}
 	
 	/**
-	 * This method is to populate all the different data structures being used in the SeekGold class.
-	 * 
+	 * This method is to populate all the different data structures being used in this class.
 	 */
 	public void populateMaps(){
 		
@@ -142,14 +147,18 @@ public class SeekGold {
 	
 	
 	/**
-	 * This method seeks for gold thru the cavern. It ensures that there is enough time to reach the exit node
-	 * before moving to any node. It compares two nodes based on their visited frequency. It favors the movement
-	 * into non-visited and less visited nodes. If none of the neighbor's nodes of the current state's node is reachable
+	 * This is the actual execution of the strategy of this class. 
+	 * It first ensures that there is enough time to reach the exit node before moving to any new node. 
+	 * It compares two nodes based on their visited frequency. It favors the movement into non-visited 
+	 * and less visited nodes. If none of the neighbor's nodes of the current state's node is reachable
 	 * (meaning, no enough time to reach it and reach the exit node), then the method evokes the Metadata of
 	 * the current node to find the optimal path to the exit Node and follows that path. 
 	 */
-	public void seek(){
+	@Override
+	public void execute(){
 		
+		
+		populateMaps();
 		/*
 		 * While statement being leveraged to ensure there is enough time to keep looping through the cavern.
 		 */
@@ -183,13 +192,8 @@ public class SeekGold {
 				superEvalNodeMap.get(state.getCurrentNode()).getEscapeMinPath().run();
 				
 			}		
-		}
-		
-		
-		
+		}	
 	}
-	
-	
 	
 	
 }
