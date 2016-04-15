@@ -9,32 +9,32 @@ import java.util.Stack;
 import java.util.function.Predicate;
 
 /**
- * @author YasserAlejandro
+ * @author ypalac01
  * An implementation of OptimalPath using Dijktra's algorithm
  */
 public class OptimalPathDijkstra implements OptimalPath {
 	
 	/**
-	 * The state phase is injected in this class to be able to navigate and leverage
-	 * its methods. 
+	 * An EscapeState field injected in this class to provide all application the context 
+	 * on which the class is to operate.  
 	 */
 	private EscapeState state;
 	
 	/**
-	 * This is the starting/departure point(node).
+	 * The starting or departure node.
 	 */
 	private Node startNode;
 	
 	/**
-	 * This is the ending/target point(node).
+	 * The ending or target node.
 	 */
 	private Node targetNode;
 	
 	/**
 	 * Constructor of the class. 
-	 * @param state
-	 * @param startNode
-	 * @param targetNode
+	 * @param state. The state to provide context to this class.
+	 * @param startNode. The starting node.
+	 * @param targetNode. The ending/target node.
 	 */
 	public OptimalPathDijkstra(EscapeState state, Node startNode, Node targetNode){
 		this.state=state;
@@ -44,43 +44,47 @@ public class OptimalPathDijkstra implements OptimalPath {
 	
 	
 	/**
-	 * This PriorityQueue is the auxiliary PriorityQueue data structure being used to implement Djikstra
-	 * solution. A SuperNode is class that contains Metadata about a Node. 
+	 * A PriorityQueu data structure being use to implement Djikstra optimization solution. 
+	 * A SuperNode is class that contains Metadata about a node, for more information
+	 * refer to @SuperNode class. 
 	 */
 	PriorityQueue<SuperNode> frontier = new PriorityQueueImpl<>();
 	
 	/**
-	 * This Map helps to stored Metadata information about every Node in the graph. The Long key is
-	 * the unique id of every Node in the graph.
+	 * A map to store Metadata information about every node in the graph. The Long key is
+	 * the unique id of every node in the graph. The SuperNode contains Metadata about the
+	 * the node corresponding to the key. 
 	 */
 	Map<Long, SuperNode> mapper = new HashMap<>();
 	
 	/**
-	 * This Map is used to register the distance between the startNode and every node in the graph.
+	 * A map used to register the distance between the starting node and every node in the graph.
 	 */
 	Map<Long, Integer> pathWeights = new HashMap<>();
 	
 	/**
-	 * This Stack of Nodes is used to record the optimal path sequence trace of navigation of nodes. 
+	 * A stack of nodes use to record the optimal path navigation sequence from the starting node 
+	 * to the target node. 
 	 */
 	Stack<Node> sequence = new Stack<>();
 	
 	/**
-	 * This predicate serves to filter out any non-navigable Nodes.
+	 * A predicate to filter out any node that is not open (navigable).
 	 */
 	Predicate<Node> navigable = p -> p.getTile().getType().isOpen() == true;
 	
 	/**
-	 * This is the implementation of the method from the OptimalPath interface. Its output is the 
-	 * optimal minimal distance between the startNode and targetNode based on Djistra's optimal
-	 * path algorithm.
+	 * Implementation of the method from the OptimalPath interface. It outputs is the 
+	 * optimal minimal distance between the starting node and target node based on 
+	 * Djistra's optimal path algorithm.
+	 * @return int. The optimal distance between two nodes based on Dijstra's algorithm.
 	 */
 	@Override
 	public int calculateminpath(){
 	
         /*
-		 *The below collection manipulation creates a SuperNode Metadata for each Node in the Escape state and stores it
-		 *in the mapper Map.
+		 *The below collection creates a SuperNode Metadata for each node in the escape state and stores it
+		 *in a map.
 		 */  	
 		state.getVertices().stream().filter(navigable).forEach((n) ->mapper.put(n.getId(),new SuperNode(n,null,null)));
 		
@@ -90,8 +94,8 @@ public class OptimalPathDijkstra implements OptimalPath {
 		pathWeights.put(starting.getNode().getId(),0);
 		
 		/*
-		 * The below section goes thru every Node and facilitates the metadata population of every SuperNode.
-		 * As well as the calculation and update of the distance between every Node and the start Node. In
+		 * The below section goes thru every node and facilitates the Metadata population of every supernode.
+		 * As well as the calculation and update of the distance between every node and the starting node. In
 		 * addition, it updates the PriorityQueue frontier.
 		 */
 		while (frontier.size()!=0){
@@ -124,9 +128,9 @@ public class OptimalPathDijkstra implements OptimalPath {
 	}
 	
 	/**
-	 * Implementation of run from OptimalPath interface.
-	 * It leverages the Stack<Node> sequence and the mapper Map to navigate from
-	 * the current Node to the Target Node. It picks up gold on its way.
+	 * Implementation of run method from OptimalPath interface.
+	 * It leverages the Stack<Node> sequence and the mapper Map data structures
+	 * to navigate from the starting node to the target node. It picks up gold on its way.
 	 */
 	@Override
 	public void run(){
@@ -152,8 +156,12 @@ public class OptimalPathDijkstra implements OptimalPath {
 	}
 	
 	/**
-	 * This method returns the distance between a particular Node entered as a parameter
-	 * and the starting Node of this state.
+	 * Returns the distance between a particular node entered as a parameter
+	 * and the starting node.
+	 * @param node. The node whose distance from the starting node we wish to
+	 * retrieve.
+	 * @return int. The distance between the starting node and the node entered as
+	 * a parameter.
 	 */
 	public int getDistance(Node node){
 		return mapper.get(node.getId()).getDistance();

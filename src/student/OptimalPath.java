@@ -1,21 +1,19 @@
 package student;
 
 /**
- * @author YasserAlejandro
- * 
- * OptimalPath will provide you the optimal path between two points.
+ * @author ypalac01
+ * An implementation will provide the optimal path between two points.
  */
 public interface OptimalPath {
 	
 	/**
 	 * Calculates the minimal path between two end points.
-	 * 
-	 * @return the minimal path distance between two points.
+	 * @return int. The minimal path distance between two points.
 	 */
 	public int calculateminpath();
 	
 	/**
-	 * Will execute a minimal path trajectory that was used to calculate the minimal path distance. 
+	 * Traverses through the minimal path trajectory between two points.
 	 */
 	public void run();
 	
