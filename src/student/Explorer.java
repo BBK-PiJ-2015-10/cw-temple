@@ -40,8 +40,8 @@ public class Explorer {
      */
     public void explore(ExplorationState state) {
         
-    	SmartExploration smartExploration = new SmartExploration(state);
-    	smartExploration.run();
+    	ExplorationStrategy optimizedDepthFirstSearch = new ExplorationDepthFirstSearch(state);
+    	optimizedDepthFirstSearch.run();
     	    
         
     }
