@@ -4,38 +4,37 @@ import java.util.Objects;
 import game.Node;
 
 /**
- * @author YasserAlejandro
- * 
- * This is a class created to hold Metadata about a Node. It was created to facilitate the
- * implementation of the Djistra algorithm to find and navigate through the optimal path between two nodes.
+ * @author ypalac01
+ * A class that holds Metadata about a node. It stores an encapsulated node,
+ * the distance of that node to a target node, and the precessor of the encapsulated
+ * node on its path to the target node.
  */
 public class SuperNode {
 	
 	/**
-	 *This is the Node whose Metadata we will capture
+	 * This is the node whose Metadata is being captured in this class.
 	 */
 	private Node node;
 	
 	/**
-	 *This field is to capture the distance between the Node field in this SuperNode and a Target Node
+	 * This field is the distance between the node field in this class and a target node.
 	 */
 	private Integer distance;
 	
 	/**
-	 *This field captures the predecessor of the Node in this SuperNode. This predecessor node needs to
-	 *be visited before the Node in the SuperNode to go from the starting point to the target point.
+	 * This field is the predecessor node of the node in this class.
 	 */
 	private Node predecessor;
 	
 	/**
-	 *This is a getter method that returns the Node field in this SuperNode.
+	 * @return Node. Returns the node field of this class.
 	 */
 	public Node getNode(){
 		return this.node;
 	}
 	
 	/**
-	 *This method returns the distance between this SuperNode Node and the starting node.
+	 * @return Integer. Returns the distance field of this class.
 	 */
 	public Integer getDistance(){
 		return this.distance;
@@ -43,27 +42,33 @@ public class SuperNode {
 	
 	
 	/**
-	 * This getter method returns the Predecessor Node field associated to this SuperNode.
+	 * @Return Node. Returns the predecessor node field of this class.
 	 */
 	public Node getPrede(){
 		return this.predecessor;
 	}
 	
 	/**
-	 *This is a basic constructor.
+	 * This is a basic constructor.
 	 */
 	public SuperNode(){		
 	}
 	
 	/**
-	 *This is a more comprehensive constructor with all the fields in the class.
+	 * Comprehensive constructor with all the fields in the class.
+	 * @param Node. The node encapsulated in this class.
+	 * @param Integer. The distance between encapsulated node and a target node.
+	 * @param Node. The predecessor of the encapsulated node.
 	 */
 	public SuperNode(Node node, Integer distance, Node predecessor){
 		this.setSuperNode(node,distance,predecessor);
 	}
 	
 	/**
-	 *This is a setter for node, distance, and predecessor fields.
+	 * Sets the values for node, distance, and predecessor fields.
+	 * @param Node. The node encapsulated in this class.
+	 * @param Integer. The distance between encapsulated node and a target node.
+	 * @param Node. The predecessor of the encapsulated node.
 	 */
 	public void setSuperNode(Node node, Integer distance, Node predecessor){
 		this.setNode(node);
@@ -72,28 +77,33 @@ public class SuperNode {
 	}
 	
 	/**
-	 * This is a setter for node.
+	 * Sets the value for the node field in this class.
+	 * @param Node. The node encapsulated in this class.
 	 */
 	public void setNode(Node node){
 		this.node = node;
 	}
 	
 	/**
-	 *This is a setter for the distance.
+	 * Sets the value for the distance field in this class.
+	 * @param Integer. The distance between encapsulated node and a target node.
 	 */
 	public void setDistance(Integer distance){
 		this.distance= distance;
 	}
 	
 	/**
-	 *This is a setter for the predecessor.
+	 * Sets the value for the predecessor field in this class.
+	 * @param Node. The predecessor of the encapsulated node in this class.
 	 */
 	public void setPredecessor(Node predecessor){
 		this.predecessor = predecessor;
 	}
 	
 	/**
-	 *This is a setter for distance and predecessor.
+	 * Sets the value for the distance and predecessor fields in this class.
+	 * @param Integer. The distance between encapsulated node and a target node.
+	 * @param Node. The predecessor of the encapsulated node in this class.
 	 */
 	public void setDistancePredecessor(Integer distance,Node predecessor){
 		this.setDistance(distance);
@@ -102,7 +112,9 @@ public class SuperNode {
 	
 	
 	/**
-	 *A local implementation of the equals method done to facilitate Testing.
+	 * A local implementation of the equals method done to facilitate testing.
+	 * @return boolean. Returns true if the id of node encapsulated in the objects
+	 * being compared are equal.
 	 */
 	@Override
     public boolean equals(Object ob) {
@@ -116,7 +128,8 @@ public class SuperNode {
     }
 	
 	/**
-	 *A local implementation of the hashCode method done to facilitate Testing.
+	 * A local implementation of the hashCode method done to facilitate testing.
+	 * @return int. Returns the hashcode of the encapsulate node's id.
 	 */
 	@Override
     public int hashCode() {

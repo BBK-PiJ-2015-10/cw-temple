@@ -9,40 +9,45 @@ import game.ExplorationState;
 import game.NodeStatus;
 
 /** 
- * @author YasserAlejandro
- * 
- * This class is an implementation of the ExplorationStrategy interface using the a Depth-First-Search algorithm
+ * @author ypalac01
+ * An implementation of the ExplorationStrategy interface using the a Depth-First-Search algorithm
  * aided by an optimizer based on the minimal distance to the target node.
  */
 public class ExplorationDepthFirstSearch implements ExplorationStrategy {
 	
 	/**
-	 * An ExplorationState field in the class. Its methods are being leveraged across this class.
+	 * An exploration state field, to provide application context to this class.
 	 */
 	private ExplorationState state;
 	
 	/**
-	 * Constructor with the injection of an ExplorationState.
-	 * @param an ExplorationState state.
+	 * Constructor with the injection of an exploration state.
+	 * @param ExplorationState . The exploration state in whose context this class will operate.
 	 */
 	public ExplorationDepthFirstSearch(ExplorationState state){
 		this.state = state;
 	}
 	
 	/**
-	 *  A set of Long variable to capture the id's of all the nodes already visited. This is to
-	 *  optimize navigation by minimizing the visit to already visited nodes.
+	 * A set of long to capture the id's of all the nodes already visited. This is to
+	 * optimize navigation by minimizing the visit to already visited nodes.
 	 */
 	private Set<Long> seen = new LinkedHashSet<>();
 	
 	/**
-	 * This is a stack of Long to create a stack of Node id's. This is to keep track of the sequence
-	 * in which nodes have been visited to facilitate navigating in and out of a node sector.
+	 * Stack of long to create a stack of node id's. This is to keep track of the sequence
+	 * in which nodes have been visited to facilitate navigation.
 	 */
 	private Stack<Long> compass = new Stack<>();
 	
 	/**
-	* This is the execution of the depth-first-search strategy
+	* Implementation of the method from interface. Description of procedures:
+	* a - Executes until target is reached.
+	* b - Push current node into stack and marks it as visited on the visit tracking map.
+	* c - Retrieves (if any) a neighbor of the current node that is unvisited and who is closer
+	* d - to that target. Moves to that node. Repeat steps a to c.
+	* e - If step c didn't retrieve a value. Pops a node from the stack and moves into that node. 
+	* Repeat steps a to c.
 	**/
 	@Override
 	public void execute(){
@@ -61,7 +66,7 @@ public class ExplorationDepthFirstSearch implements ExplorationStrategy {
 	        Predicate<NodeStatus> unvisited = p -> seen.contains(p.getId()) == false;
 	              
 	        /*
-	         * This is the id of the next Node to be visited.
+	         * This is the id of the next node to be visited.
 	         */
 	        Long next;
 	   

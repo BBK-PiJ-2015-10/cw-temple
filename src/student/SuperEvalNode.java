@@ -4,58 +4,63 @@ import java.util.Objects;
 import game.Node;
 
 /**
- * @author YasserAlejandro
+ * @author ypalac01
  * 
- * A class to hold Metadata information about a particular Node. It stores the distance of the Node
- * to the Exit node of the graph and its OptimalPath to that Exit node. 
+ * A class that holds Metadata about a node. It stores an encapsulated node,
+ * the minimal distance of that node to a target node, and the minimal path
+ * trajectory from the encapsulated node to the target node.
  */
 public class SuperEvalNode {
 	
 	/**
-	 * This is the Node associated with this Metadata class.
+	 *  This is the node whose Metadata is being captured in this class.
 	 */
 	private Node node;
 	
 	/**
-	 * This is the distance between the Node from this SuperEvalNode and the Exit Node of the graph.
+	 * This field is the minimal path distance between the node field in this class and a target node.
 	 */
 	private Integer distanceToExit;
 	
 	/**
-	 * This is the OptimalPath between the from the Node associated with this SuperEvalNode and the Exit Node of the graph.
+	 * This is the OptimalPath trajectory between the from the node encapsulated in this class and a target node.
 	 */
 	private OptimalPath escapeMinPath;
 	
 	/**
-	 * This is a getter method that returns the Node associated to this SuperEvalNode.
+	 * @return Node. Returns the node field of this class.
 	 */
 	public Node getNode(){
 		return this.node;
 	}
 	
 	/**
-	 * This returns the distance between this Node associated with this SuperEvalNode and the Exit Node of the graph.
+	 * @return Integer. Returns minimal distance between the encapsulated node in this class
+	 * and a target node.
 	 */
 	public Integer getDistanceToExit(){
 		return this.distanceToExit;
 	}
 	
 	/**
-	 * This returns the OptimalPath between the from the Node associated with this SuperEvalNode and the Exit Node of the graph.
+	 * @return OptimalPath. Returns the minimal path trajectory between the from the node
+	 * encapsulated in this class and a target node.
 	 */
 	public OptimalPath getEscapeMinPath(){
 		return this.escapeMinPath;
 	}
 	
 	/**
-	 * This is a basic constructor.
+	 * Basic constructor.
 	 */
 	public SuperEvalNode(){
 	}
 	
 	/**
-	 * This is a constructor that takes a Node and an OptimalPath.
-	 * It sets the distance based value of the calculateminpath of the OptimalPath.
+	 * Comprehensive constructor.
+	 * @param Node. The node encapsulated in this class.
+	 * @param OptimalPath. The optimal path trajectory between the encapsulated node
+	 * and a target node.
 	 */
 	public SuperEvalNode(Node node,OptimalPath path ){
 		this.setNode(node);
@@ -64,21 +69,26 @@ public class SuperEvalNode {
 	}	
 		
 	/**
-	 * This is a setter method for the node.
+	 * Sets the value for the node field in this class.
+	 * @param Node. The node encapsulated in this class.
 	 */
 	public void setNode(Node node){
 		this.node = node;
 	}
 	
 	/**
-	 * This is a setter for the escapeMinPath.
+	 * Sets the value for the escapeMinPath field in this class.
+	 * @param OptimalPath. The optimal path between the node
+	 * encapsulated in this class and a target node.
 	 */
 	public void setOptimalFromToPath(OptimalPath escapeMinPath){
 		this.escapeMinPath = escapeMinPath;
 	}
 	
 	/**
-	 * This is a setter for the distanceToExit.
+	 * Sets the value for the distance field in this class.
+	 * @param int. The minimal path distance between encapsulated node
+	 * and a target node.
 	 */
 	public void setDistanceToExit(int distanceToExit){
 		this.distanceToExit = distanceToExit;
