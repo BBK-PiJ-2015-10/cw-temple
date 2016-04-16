@@ -10,11 +10,11 @@ public interface OptimalPath {
 	 * Calculates the optimal path between two end points.
 	 * @return int. The optimal path distance between two points.
 	 */
-	public int calculateoptimalpath();
+	int calculateoptimalpath();
 	
 	/**
 	 * Traverses through the optimal path trajectory between two points.
 	 */
-	public void run();
+	void run();
 	
 }

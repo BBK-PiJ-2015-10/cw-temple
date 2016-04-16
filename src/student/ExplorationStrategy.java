@@ -9,6 +9,6 @@ public interface ExplorationStrategy {
 	/**
 	 * Executes a defined exploration strategy.
 	 */
-	public void execute();
+	void execute();
 	
 }
