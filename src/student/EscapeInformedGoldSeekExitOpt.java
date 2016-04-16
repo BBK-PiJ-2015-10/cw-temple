@@ -80,15 +80,15 @@ public class EscapeInformedGoldSeekExitOpt implements EscapeStrategy {
 	/**
 	* Returns the distance between the state's current node and a particular node. If the node is
 	* a neighbor it returns the length of the edge between them.
-	* @param node2. A node whose distance we want to estimate from the state's current node.
+	* @param inputNode. A node whose distance we want to estimate from the state's current node.
 	* @return int. The distance between the state's current node and the node specified as a parameter.
 	* If the parameter node is a neighbor, it returns the length of the edge between them. 
 	* If the parameter node is not a neighbor, it returns an infinitive value (Integer.MAX_VALUE).
 	*/
-	public int getDistanceToNode (Node node2){
+	public int getDistanceToNode (Node inputNode){
 		for (Edge e : state.getCurrentNode().getExits()){
 			Node other = e.getOther(state.getCurrentNode());
-			if (other == node2){
+			if (other == inputNode){
 				return e.length;
 			}
 		}
