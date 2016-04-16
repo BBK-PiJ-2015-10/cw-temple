@@ -7,13 +7,13 @@ package student;
 public interface OptimalPath {
 	
 	/**
-	 * Calculates the minimal path between two end points.
-	 * @return int. The minimal path distance between two points.
+	 * Calculates the optimal path between two end points.
+	 * @return int. The optimal path distance between two points.
 	 */
-	public int calculateminpath();
+	public int calculateoptimalpath();
 	
 	/**
-	 * Traverses through the minimal path trajectory between two points.
+	 * Traverses through the optimal path trajectory between two points.
 	 */
 	public void run();
 	

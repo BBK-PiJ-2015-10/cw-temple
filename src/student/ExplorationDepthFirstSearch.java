@@ -22,7 +22,7 @@ public class ExplorationDepthFirstSearch implements ExplorationStrategy {
 	
 	/**
 	 * Constructor with the injection of an exploration state.
-	 * @param ExplorationState . The exploration state in whose context this class will operate.
+	 * @param state. The exploration state in whose context this class will operate.
 	 */
 	public ExplorationDepthFirstSearch(ExplorationState state){
 		this.state = state;

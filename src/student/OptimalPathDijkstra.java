@@ -10,7 +10,8 @@ import java.util.function.Predicate;
 
 /**
  * @author ypalac01
- * An implementation of OptimalPath using Dijktra's algorithm
+ * An implementation of OptimalPath using Dijktra's algorithm that provides the minimal
+ * distance between two paths.
  */
 public class OptimalPathDijkstra implements OptimalPath {
 	
@@ -45,17 +46,17 @@ public class OptimalPathDijkstra implements OptimalPath {
 	
 	/**
 	 * A PriorityQueu data structure being use to implement Djikstra optimization solution. 
-	 * A SuperNode is class that contains Metadata about a node, for more information
-	 * refer to @SuperNode class. 
+	 * A MetaNodePre is class that contains metadata about a node, for more information
+	 * refer to @MetaNodePre class. 
 	 */
-	PriorityQueue<SuperNode> frontier = new PriorityQueueImpl<>();
+	PriorityQueue<MetaNodePre> frontier = new PriorityQueueImpl<>();
 	
 	/**
-	 * A map to store Metadata information about every node in the graph. The Long key is
-	 * the unique id of every node in the graph. The SuperNode contains Metadata about the
+	 * A map to store metadata information about every node in the graph. The long key is
+	 * the unique id of every node in the graph. The MetaNodePre contains metadata about the
 	 * the node corresponding to the key. 
 	 */
-	Map<Long, SuperNode> mapper = new HashMap<>();
+	Map<Long, MetaNodePre> mapper = new HashMap<>();
 	
 	/**
 	 * A map used to register the distance between the starting node and every node in the graph.
@@ -80,31 +81,31 @@ public class OptimalPathDijkstra implements OptimalPath {
 	 * @return int. The optimal distance between two nodes based on Dijstra's algorithm.
 	 */
 	@Override
-	public int calculateminpath(){
+	public int calculateoptimalpath(){
 	
         /*
-		 *The below collection creates a SuperNode Metadata for each node in the escape state and stores it
+		 *The below collection creates a MetaNodePre metadata for each node in the escape state and stores it
 		 *in a map.
 		 */  	
-		state.getVertices().stream().filter(navigable).forEach((n) ->mapper.put(n.getId(),new SuperNode(n,null,null)));
+		state.getVertices().stream().filter(navigable).forEach((n) ->mapper.put(n.getId(),new MetaNodePre(n,null,null)));
 		
-		SuperNode starting = mapper.get(startNode.getId());
+		MetaNodePre starting = mapper.get(startNode.getId());
 		starting.setDistance(0);
 		frontier.add(starting,0);
 		pathWeights.put(starting.getNode().getId(),0);
 		
 		/*
-		 * The below section goes thru every node and facilitates the Metadata population of every supernode.
+		 * The below section goes thru every node and facilitates the metadata population of every MetaNodePre.
 		 * As well as the calculation and update of the distance between every node and the starting node. In
 		 * addition, it updates the PriorityQueue frontier.
 		 */
 		while (frontier.size()!=0){
-    		SuperNode current = frontier.poll();
+    		MetaNodePre current = frontier.poll();
     		int cWeight = pathWeights.get(current.getNode().getId());
     		for (Edge e : current.getNode().getExits()){
     			Node other = e.getOther(current.getNode());
     			if (other.getTile().getType().isOpen()) {
-    				SuperNode superother = mapper.get(other.getId());
+    				MetaNodePre superother = mapper.get(other.getId());
     				int weightThroughOther = cWeight + e.length();
     				Integer existingWeight = pathWeights.get(other.getId());
     				if (existingWeight == null) {
@@ -129,14 +130,14 @@ public class OptimalPathDijkstra implements OptimalPath {
 	
 	/**
 	 * Implementation of run method from OptimalPath interface.
-	 * It leverages the Stack<Node> sequence and the mapper Map data structures
+	 * It leverages the stack of Node sequence and the mapper Map data structures
 	 * to navigate from the starting node to the target node. It picks up gold on its way.
 	 */
 	@Override
 	public void run(){
 		
 	    sequence.push(targetNode);	
-	    SuperNode temp = mapper.get(targetNode.getId());
+	    MetaNodePre temp = mapper.get(targetNode.getId());
 	    while (temp != mapper.get(state.getCurrentNode().getId()) )
 		      {
 			      sequence.push(temp.getPrede());
