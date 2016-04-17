@@ -75,6 +75,18 @@ public class EscapeInformedGoldSeekExitOpt implements EscapeStrategy {
 	 * won't allow to reach the exit node on-time.
 	 */
 	Predicate<Node> reachable = p -> superEvalNodeMap.get(p).getDistance() < (state.getTimeRemaining()-getDistanceToNode(p));
+	
+	/**
+	 * Predicate to filter out any node that has no gold left and whose neighbors have no gold left as well.
+	 */
+	Predicate<Node> clusterGold = p -> getClusterGold(p) > 0;
+	
+	
+	/**
+	 * Predicate to filter out any node that has been visited.
+	 */
+	Predicate<Node> unvisited = p -> visitedNodeMap.get(p) < 1;
+	
 
 	/**
 	* Returns the distance between the state's current node and a particular node. If the node is
@@ -114,6 +126,16 @@ public class EscapeInformedGoldSeekExitOpt implements EscapeStrategy {
 	}
 	
 	
+	/**
+	 * Provides the current gold level of a node and its neighbors' gold level. 
+	 * @param node. Any node whose gold and neighbor's current gold level is to be calculated.
+	 * @return Integer. The sum of the current gold level of a node and its neighbors'.
+	 */
+	public Integer getClusterGold(Node node){
+		Collection<Node> neighbors = getNeighbors(node);
+		return neighbors.stream().mapToInt((n)-> nodeGoldMap.get(n)).sum() + nodeGoldMap.get(node);
+	}
+	
 	
 	
 	/**
@@ -151,48 +173,82 @@ public class EscapeInformedGoldSeekExitOpt implements EscapeStrategy {
 	
 	/**
 	 * Implementation of method from EscapeStrategy interface. Description of procedures:
-	 * - Ensures that there is enough time to reach the exit node before moving to any new node. 
-	 * - Compares two nodes based on their visited frequency. Favors movement to less visited nodes.
-	 * - If none of the current node's neighbors are reachable, retrieves the metadata of the current 
+	 * a - Ensures that there is enough time to reach the exit node before moving to any new node.
+	 * b - Filters for reachable, unvisited neighbor nodes, with either gold itself or its neighbors.
+	 * Selects the one that has the highest cluster gold level (its gold level and the neighbor's gold level).
+	 * c - If there isn't a node from b, then filters for a reachable neighbor, selects the less visited one of them.
+	 * d - If there isn't a node from c, then retrieves the metadata of the current 
 	 * node to find optimal path to exit and executes path. 
 	 */
 	@Override
 	public void execute(){
 		
 		
+		
 		populateMaps();
+		
 		/*
 		 * While statement being leveraged to ensure there is enough time to keep looping through the cavern.
 		 */
 		while (state.getTimeRemaining() >= superEvalNodeMap.get(state.getCurrentNode()).getDistance() ){
 			
+			Optional<Node> nextNode;
+			
+			
 			/*
-			 * Returns an optional node who is a neighbor node of the state's current node, that is reachable
-			 * (refer to the reachable predicate for definition) and selects the node that has been visited
-			 * the least in the past. This is to minimize navigating through a node that has been visited.  
+			 * Returns an optional node if there is reachable neighbor, uninvisited, with either gold himself
+			 * or with neighbors with gold. Selects the one with the highest gold level on its cluster (neighborhood).  
 			 */
-			Optional<Node> nextNode = neighborsMap.get(state.getCurrentNode()).stream().filter(reachable)
-			.min((p1,p2)-> visitedNodeMap.get(p1).compareTo(visitedNodeMap.get(p2)));
+		    nextNode = neighborsMap.get(state.getCurrentNode()).stream().filter(reachable).
+			filter(unvisited).filter(clusterGold).max((p1,p2)-> getClusterGold(p1).compareTo(getClusterGold(p2)));
+		   
+		   
+		   /*
+			* If the prior statement provided a node. Moves to that node, updates visitedNodeMap data structure, 
+			* collects gold if any, updates goldMap.
+		    */
+		   if (nextNode.isPresent()){
+			  state.moveTo(nextNode.get());
+			  visitedNodeMap.put(state.getCurrentNode(),visitedNodeMap.get(state.getCurrentNode())+1);
+			  if (nodeGoldMap.get(state.getCurrentNode()) > 0) {
+		    	state.pickUpGold();
+		    	nodeGoldMap.put(state.getCurrentNode(),0);
+		      }
+		   }
+		  
+		 
+		   else {
+					
+			
+			  /*
+			   * Returns an optional node who is a neighbor node of the state's current node, that is reachable
+			   * (refer to the reachable predicate for definition) and selects the node that has been visited
+			   * the least in the past. This is to minimize navigating through a node that has been visited.  
+			   */
+			  nextNode = neighborsMap.get(state.getCurrentNode()).stream().filter(reachable)
+			  .min((p1,p2)-> visitedNodeMap.get(p1).compareTo(visitedNodeMap.get(p2)));
 						
 			
-			/*
-			 * If a neighbor node is reachable. Moves to that node, updates visitedNodeMap data structure, 
-			 * collects gold if any, updates goldMap. If not, it heads to the exit node by following the
-			 * optimal minimal path.
-			 */
-			if (nextNode.isPresent()){
-				state.moveTo(nextNode.get());
-				visitedNodeMap.put(state.getCurrentNode(),visitedNodeMap.get(state.getCurrentNode())+1);
-				if (nodeGoldMap.get(state.getCurrentNode()) > 0) {
-		    		state.pickUpGold();
-		    		nodeGoldMap.put(state.getCurrentNode(),0);
-		    	 }
-			}
+			  /*
+			   * If a neighbor node is reachable. Moves to that node, updates visitedNodeMap data structure, 
+			   * collects gold if any, updates goldMap. If not, it heads to the exit node by following the
+			   * optimal minimal path.
+			   */
+			  if (nextNode.isPresent()){
+				  state.moveTo(nextNode.get());
+				  visitedNodeMap.put(state.getCurrentNode(),visitedNodeMap.get(state.getCurrentNode())+1);
+				  if (nodeGoldMap.get(state.getCurrentNode()) > 0) {
+		    		  state.pickUpGold();
+		    		  nodeGoldMap.put(state.getCurrentNode(),0);
+		    	   }
+			  }
 			
-			else {
-				superEvalNodeMap.get(state.getCurrentNode()).getEscapeMinPath().run();
-				
-			}		
+			  else {
+				  superEvalNodeMap.get(state.getCurrentNode()).getEscapeMinPath().run();
+			  }
+		     
+		   }	
+			
 		}	
 	}
 	
