@@ -13,7 +13,6 @@ import java.util.Optional;
 
 /**
  * @author ypalac01
- * 
  * An implementation of the EscapeStratety interface. It is characterize as being: 
  * - Informed: Since it defines and uses four data structures (Maps) to gather as much information
  * as possible about all the nodes in the cavern and leverage this information in the navigation process.
