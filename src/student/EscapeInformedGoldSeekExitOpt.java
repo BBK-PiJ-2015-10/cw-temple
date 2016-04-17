@@ -12,7 +12,7 @@ import java.util.Optional;
 
 
 /**
- * @author YasserAlejandro
+ * @author ypalac01
  * 
  * An implementation of the EscapeStratety interface. It is characterize as being: 
  * - Informed: Since it defines and uses four data structures (Maps) to gather as much information
